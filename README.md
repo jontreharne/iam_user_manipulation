@@ -29,10 +29,13 @@ This will now run the iam bash script.
 
 # Arguments available
 
--a | -d | -v            - Activity, Add, Delete or View - MUST specify only one activity
--U <IAM User>           - Mandatory
+-a | -d | -v            - Activity, Add, Delete or View - MUST specify only one activity.
+
+-U <IAM User>           - Mandatory.
+  
 -G <IAM Group ID>       - Optional for creation, mandatory if for deletion if a user is assigned to a group.
--E <Corp Email Address> - Mandatory for Creation
+  
+-E <Corp Email Address> - Mandatory for Creation.
 
 # Also available
 
