@@ -32,7 +32,7 @@ Usage() {
 
         -a, -d & -v are activities - Add, Delete or View.
         -U Specify an existing or to be created IAM User ID (depending on the activity)
-        -G Optionally specify the Group the user should belong to, the default is: ${DefaultIAMGroupID}
+        -G Mandatory for User Creation, specify the Group the user should belong to.
         -E Mandatory for User Creation, specify the user's corporate Email Address.
  " >&2
  exit
@@ -46,13 +46,12 @@ Log() {
 # MAIN
 declare -i AddActivity=0 DeleteActivity=0 ViewActivity=0
 IAMUserID=""
-DefaultIAMGroupID="Admin"
+DefaultIAMGroupID="None"
 
 # Validate options
 CheckOptions $*
 
-# Default the Group ID if not specified
-IAMGroupID="${IAMGroupID:=${DefaultIAMGroupID}}"
+
 
 # User ID MUST be specified
   if [ -z "${IAMUserID}" ]
@@ -72,6 +71,18 @@ IAMGroupID="${IAMGroupID:=${DefaultIAMGroupID}}"
 ((AddActivity))         && ChosenActivity="Add"
 ((DeleteActivity))      && ChosenActivity="Delete"
 ((ViewActivity))        && ChosenActivity="View"
+
+if ((AddActivity))
+  then
+  if [ -z "${IAMGroupID}" ]
+  then
+  Log "ERROR: While adding a User, you MUST specify an User Group with -G option - Exiting"
+    Usage
+  fi
+ fi
+
+# Default the Group ID if not specified
+IAMGroupID="${IAMGroupID:=${DefaultIAMGroupID}}"
 
 aws configure set default.region eu-west-2
 
